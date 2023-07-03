@@ -99,7 +99,7 @@ class _DetailPageState extends State<DetailPage> {
                     left: 0,
                     child: SizedBox(
                       height: 350,
-                      child: Image.asset(_plantList[widget.plantId].imageURL),
+                      child: Image.network(_plantList[widget.plantId].imageURL),
                     ),
                   ),
                   Positioned(
@@ -202,7 +202,7 @@ class _DetailPageState extends State<DetailPage> {
                   ),
                   Expanded(
                     child: Text(
-                      _plantList[widget.plantId].decription,
+                      _plantList[widget.plantId].description,
                       textAlign: TextAlign.justify,
                       style: TextStyle(
                         height: 1.5,

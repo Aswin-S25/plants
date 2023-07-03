@@ -1,3 +1,7 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:plant/constants.dart';
 import 'package:plant/models/plants.dart';
@@ -170,7 +174,7 @@ class _HomePageState extends State<HomePage> {
                             right: 50,
                             top: 50,
                             bottom: 50,
-                            child: Image.asset(plantList[index].imageURL),
+                            child: Image.network(plantList[index].imageURL),
                           ),
                           Positioned(
                             bottom: 15,
@@ -233,21 +237,30 @@ class _HomePageState extends State<HomePage> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             height: size.height * .5,
-            child: ListView.builder(
-                itemCount: plantList.length,
-                scrollDirection: Axis.vertical,
-                physics: const BouncingScrollPhysics(),
-                itemBuilder: (BuildContext context, int index) {
-                  return GestureDetector(
-                      onTap: (){
-                        Navigator.push(context, PageTransition(child: DetailPage(plantId: plantList[index].plantId), type: PageTransitionType.bottomToTop));
-                      },
-                      child: PlantWidget(index: index, plantList: plantList));
-                }),
+            child: const Addplant()
           ),
+          
         ],
       ),
     ));
   }
 }
+
+
+
+
+// ListView.builder(
+//                 itemCount: plantList.length,
+//                 scrollDirection: Axis.vertical,
+//                 physics: const BouncingScrollPhysics(),
+//                 itemBuilder: (BuildContext context, int index) {
+//                   return GestureDetector(
+//                       onTap: (){
+//                         Navigator.push(context, PageTransition(child: DetailPage(plantId: plantList[index].plantId), type: PageTransitionType.bottomToTop));
+//                       },
+//                       child: PlantWidget(index: index, plantList: plantList));
+//                 }),
+
+
+
 

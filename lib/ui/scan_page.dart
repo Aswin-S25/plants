@@ -3,11 +3,9 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:plant/ui/screens/widgets/custom_textfield.dart';
 import 'package:uuid/uuid.dart';
@@ -27,6 +25,14 @@ class _AddPlantState extends State<AddPlant> {
   final TextEditingController _plantTypeController = TextEditingController();
   final TextEditingController _plantDescriptionController =
       TextEditingController();
+
+  final TextEditingController _plantCategoryController =
+      TextEditingController();
+  final TextEditingController _plantSizeController = TextEditingController();
+  final TextEditingController _plantTemperatureController =
+      TextEditingController();
+  
+  
   final TextEditingController _plantPriceController = TextEditingController();
 
   @override
@@ -85,6 +91,33 @@ class _AddPlantState extends State<AddPlant> {
                       obscureText: false,
                       hintText: "Plant Price",
                       controller: _plantPriceController,
+                    ),
+
+                    const SizedBox(height: 50),
+
+                    CustomTextfield(
+                      icon: Icons.store_mall_directory,
+                      obscureText: false,
+                      hintText: "Category",
+                      controller: _plantCategoryController,
+                    ),
+
+                    const SizedBox(height: 50),
+
+                    CustomTextfield(
+                      icon: Icons.category_outlined,
+                      obscureText: false,
+                      hintText: "small, medium, large",
+                      controller: _plantSizeController,
+                    ),
+
+                    const SizedBox(height: 50),
+
+                    CustomTextfield(
+                      icon: Icons.bathroom_rounded,
+                      obscureText: false,
+                      hintText: "Temperature",
+                      controller: _plantTemperatureController,
                     ),
 
                     const SizedBox(height: 50),
@@ -179,15 +212,20 @@ class _AddPlantState extends State<AddPlant> {
       String type = _plantTypeController.text;
       String description = _plantDescriptionController.text;
       String price = _plantPriceController.text;
-      String image = _image.path.toString();
+      String category = _plantCategoryController.text;
+      String size = _plantSizeController.text;
+      String temperature = _plantTemperatureController.text;
       log(_imageUrl);
 
       FirebaseFirestore.instance.collection('plants').add({
         'name': name,
         'type': type,
         'description': description,
-        'price': price,
+        'price': int.parse(price),
         'url' : _imageUrl,
+        'category': category,
+        'size': size,
+        'temperature': temperature,
       }).then((DocumentReference document) async {
         // Get the ID of the added document
         String plantId = document.id;
