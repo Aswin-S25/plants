@@ -18,10 +18,10 @@ class _HomePageState extends State<HomePage> {
     int selectedIndex = 0;
     Size size = MediaQuery.of(context).size;
 
-    List<Plant> _plantList = Plant.plantList;
+    List<Plant> plantList = Plant.plantList;
 
     //Plants category
-    List<String> _plantTypes = [
+    List<String> plantTypes = [
       'Recommended',
       'Indoor',
       'Outdoor',
@@ -49,6 +49,10 @@ class _HomePageState extends State<HomePage> {
                     horizontal: 16.0,
                   ),
                   width: size.width * .9,
+                  decoration: BoxDecoration(
+                    color: Constants.primaryColor.withOpacity(.1),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -72,10 +76,6 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ],
                   ),
-                  decoration: BoxDecoration(
-                    color: Constants.primaryColor.withOpacity(.1),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
                 )
               ],
             ),
@@ -86,7 +86,7 @@ class _HomePageState extends State<HomePage> {
             width: size.width,
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: _plantTypes.length,
+                itemCount: plantTypes.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -97,7 +97,7 @@ class _HomePageState extends State<HomePage> {
                         });
                       },
                       child: Text(
-                        _plantTypes[index],
+                        plantTypes[index],
                         style: TextStyle(
                           fontSize: 16.0,
                           fontWeight: selectedIndex == index
@@ -115,7 +115,7 @@ class _HomePageState extends State<HomePage> {
           SizedBox(
             height: size.height * .3,
             child: ListView.builder(
-                itemCount: _plantList.length,
+                itemCount: plantList.length,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
@@ -124,13 +124,17 @@ class _HomePageState extends State<HomePage> {
                           context,
                           PageTransition(
                               child: DetailPage(
-                                plantId: _plantList[index].plantId,
+                                plantId: plantList[index].plantId,
                               ),
                               type: PageTransitionType.bottomToTop));
                     },
                     child: Container(
                       width: 200,
                       margin: const EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(
+                        color: Constants.primaryColor.withOpacity(.8),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
                       child: Stack(
                         children: [
                           Positioned(
@@ -139,25 +143,25 @@ class _HomePageState extends State<HomePage> {
                             child: Container(
                               height: 50,
                               width: 50,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(50),
+                              ),
                               child: IconButton(
                                 onPressed: () {
                                   setState(() {
                                     bool isFavorited = toggleIsFavorated(
-                                        _plantList[index].isFavorated);
-                                    _plantList[index].isFavorated = isFavorited;
+                                        plantList[index].isFavorated);
+                                    plantList[index].isFavorated = isFavorited;
                                   });
                                 },
                                 icon: Icon(
-                                  _plantList[index].isFavorated == true
+                                  plantList[index].isFavorated == true
                                       ? Icons.favorite
                                       : Icons.favorite_border,
                                   color: Constants.primaryColor,
                                 ),
                                 iconSize: 30,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(50),
                               ),
                             ),
                           ),
@@ -166,7 +170,7 @@ class _HomePageState extends State<HomePage> {
                             right: 50,
                             top: 50,
                             bottom: 50,
-                            child: Image.asset(_plantList[index].imageURL),
+                            child: Image.asset(plantList[index].imageURL),
                           ),
                           Positioned(
                             bottom: 15,
@@ -175,14 +179,14 @@ class _HomePageState extends State<HomePage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  _plantList[index].category,
+                                  plantList[index].category,
                                   style: const TextStyle(
                                     color: Colors.white70,
                                     fontSize: 16,
                                   ),
                                 ),
                                 Text(
-                                  _plantList[index].plantName,
+                                  plantList[index].plantName,
                                   style: const TextStyle(
                                     color: Colors.white70,
                                     fontSize: 15,
@@ -203,7 +207,7 @@ class _HomePageState extends State<HomePage> {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Text(
-                                r'$' + _plantList[index].price.toString(),
+                                r'$' + plantList[index].price.toString(),
                                 style: TextStyle(
                                     color: Constants.primaryColor,
                                     fontSize: 16),
@@ -211,10 +215,6 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                         ],
-                      ),
-                      decoration: BoxDecoration(
-                        color: Constants.primaryColor.withOpacity(.8),
-                        borderRadius: BorderRadius.circular(20),
                       ),
                     ),
                   );
@@ -234,15 +234,15 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.symmetric(horizontal: 12),
             height: size.height * .5,
             child: ListView.builder(
-                itemCount: _plantList.length,
+                itemCount: plantList.length,
                 scrollDirection: Axis.vertical,
                 physics: const BouncingScrollPhysics(),
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
                       onTap: (){
-                        Navigator.push(context, PageTransition(child: DetailPage(plantId: _plantList[index].plantId), type: PageTransitionType.bottomToTop));
+                        Navigator.push(context, PageTransition(child: DetailPage(plantId: plantList[index].plantId), type: PageTransitionType.bottomToTop));
                       },
-                      child: PlantWidget(index: index, plantList: _plantList));
+                      child: PlantWidget(index: index, plantList: plantList));
                 }),
           ),
         ],

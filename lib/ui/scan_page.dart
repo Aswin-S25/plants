@@ -1,102 +1,206 @@
-import 'package:flutter/material.dart';
-import 'package:plant/constants.dart';
+import 'dart:developer';
+import 'dart:io';
 
-class ScanPage extends StatefulWidget {
-  const ScanPage({Key? key}) : super(key: key);
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:plant/ui/screens/widgets/custom_textfield.dart';
+import 'package:uuid/uuid.dart';
+
+class AddPlant extends StatefulWidget {
+  const AddPlant({Key? key}) : super(key: key);
 
   @override
-  State<ScanPage> createState() => _ScanPageState();
+  State<AddPlant> createState() => _AddPlantState();
 }
 
-class _ScanPageState extends State<ScanPage> {
+class _AddPlantState extends State<AddPlant> {
+  XFile _image = XFile('');
+  String _imageUrl = '';
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _plantNameController = TextEditingController();
+  final TextEditingController _plantTypeController = TextEditingController();
+  final TextEditingController _plantDescriptionController =
+      TextEditingController();
+  final TextEditingController _plantPriceController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
     return Scaffold(
-      body: Stack(
-        children: [
-          Positioned(
-              top: 50,
-              left: 20,
-              right: 20,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      height: 40,
-                      width: 40,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(25),
-                        color: Constants.primaryColor.withOpacity(.15),
-                      ),
-                      child: Icon(
-                        Icons.close,
-                        color: Constants.primaryColor,
-                      ),
+      body: SingleChildScrollView(
+        child: Container(
+          width: double.infinity,
+          margin: const EdgeInsets.only(top: 30),
+          padding: const EdgeInsets.all(30),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Add Plant",
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.grey[600],
+                ),
+              ),
+              const SizedBox(height: 50),
+              Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomTextfield(
+                      icon: Icons.grass_outlined,
+                      obscureText: false,
+                      hintText: "Plant Name",
+                      controller: _plantNameController,
                     ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      debugPrint('favorite');
-                    },
-                    child: Container(
-                      height: 40,
-                      width: 40,
+                    const SizedBox(height: 50),
+
+                    CustomTextfield(
+                      icon: Icons.type_specimen_rounded,
+                      obscureText: false,
+                      hintText: "Plant Type",
+                      controller: _plantTypeController,
+                    ),
+
+                    const SizedBox(height: 50),
+
+                    CustomTextfield(
+                      icon: Icons.description_outlined,
+                      obscureText: false,
+                      hintText: "Plant Description",
+                      controller: _plantDescriptionController,
+                    ),
+
+                    const SizedBox(height: 50),
+
+                    CustomTextfield(
+                      icon: Icons.attach_money_outlined,
+                      obscureText: false,
+                      hintText: "Plant Price",
+                      controller: _plantPriceController,
+                    ),
+
+                    const SizedBox(height: 50),
+
+                    // Pick image button in green color
+                    Container(
+                      width: 100,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(25),
-                        color: Constants.primaryColor.withOpacity(.15),
+                        color: Colors.green,
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                      child: IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.share,
-                          color: Constants.primaryColor,
+                      child: TextButton(
+                        onPressed: () {
+                          pickImage();
+                        },
+                        child: const Text(
+                          "Pick Image",
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              )),
-          Positioned(
-            top: 100,
-            right: 20,
-            left: 20,
-            child: Container(
-              width: size.width * .8,
-              height: size.height * .8,
-              padding: const EdgeInsets.all(20),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      'assets/images/code-scan.png',
-                      height: 100,
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      'Tap to Scan',
-                      style: TextStyle(
-                        color: Constants.primaryColor.withOpacity(.80),
-                        fontWeight: FontWeight.w500,
-                        fontSize: 20,
+
+                    const SizedBox(height: 50),
+
+                    // Add plant button in green color
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: TextButton(
+                        onPressed: () {
+                          addPlant();
+                        },
+                        child: const Text(
+                          "Add Plant",
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
                     ),
                   ],
                 ),
-              ),
-            ),
+              )
+            ],
           ),
-        ],
+        ),
       ),
     );
+  }
+
+  Future<void> pickImage() async {
+    final ImagePicker _picker = ImagePicker();
+    try {
+      final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        setState(() {
+          _image = image;
+        });
+        log(_image.path);
+
+        User? user = FirebaseAuth.instance.currentUser;
+        if (user == null) {
+          log('No user is currently signed in');
+          return;
+        }
+
+        // Upload the selected image to Firebase Storage
+        Reference storageReference =
+            FirebaseStorage.instance.ref().child('plants/${const Uuid().v4()}');
+        UploadTask uploadTask = storageReference.putFile(File(_image.path));
+        TaskSnapshot snapshot = await uploadTask;
+        String imageUrl = await snapshot.ref.getDownloadURL();
+        log('Image uploaded to Firebase Storage: $imageUrl');
+        setState(() {
+          _imageUrl = imageUrl;
+        });
+      }
+    } catch (e) {
+      log('Image picking failed: $e');
+    }
+  }
+
+  void addPlant() {
+    if (_formKey.currentState!.validate()) {
+      // Add plant to database
+      String name = _plantNameController.text;
+      String type = _plantTypeController.text;
+      String description = _plantDescriptionController.text;
+      String price = _plantPriceController.text;
+      String image = _image.path.toString();
+      log(_imageUrl);
+
+      FirebaseFirestore.instance.collection('plants').add({
+        'name': name,
+        'type': type,
+        'description': description,
+        'price': price,
+        'url' : _imageUrl,
+      }).then((DocumentReference document) async {
+        // Get the ID of the added document
+        String plantId = document.id;
+
+        // Update the document with the image URL
+        String imageUrl =
+            ''; // Set the image URL obtained from Firebase Storage
+        await document.update({'image': imageUrl});
+
+        log('Plant added with ID: $plantId');
+      }).catchError((error) {
+        log('Error adding plant: $error');
+      });
+    }
   }
 }
