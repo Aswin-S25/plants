@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:plant/ui/disease_detection.dart';
 
-import 'ui/onboarding_screen.dart';
 
 void main(){
   runApp(MyApp());
