@@ -1,5 +1,3 @@
-// screens/doctor_list_screen.dart
-
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -17,7 +15,9 @@ class DoctorListScreen extends StatefulWidget {
 
 class _DoctorListScreenState extends State<DoctorListScreen> {
   List<Doctor> doctors = [];
+  List<Doctor> filteredDoctors = [];
   Map<String, dynamic>? doctorMap;
+  TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
@@ -38,56 +38,103 @@ class _DoctorListScreenState extends State<DoctorListScreen> {
           ),
         ),
       ),
-      body: ListView.builder(
-        itemCount: doctors.length,
-        itemBuilder: (context, index) {
-          return DoctorCard(
-            doctor: doctors[index],
-            onTap: () {
-              String roomID =
-                  chatRoomId(doctors[index].name, doctors[index].name);
-
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ChatScreen(
-                    doctor: doctors[index],
-                    chatRoomId: roomID,
-                    userMap: doctorMap,
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: TextField(
+              controller: searchController,
+              decoration: InputDecoration(
+                labelText: 'Search Doctors',
+                prefixIcon: Icon(Icons.search, color: Constants.primaryColor),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Constants.primaryColor,
                   ),
+                  borderRadius: BorderRadius.circular(
+                      10.0), // Set the border radius when not focused
                 ),
-              );
-            },
-          );
-        },
+                focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(
+                    color: Color.fromARGB(255, 18, 19, 18),
+                  ),
+                  borderRadius: BorderRadius.circular(
+                      10.0), // Set the border radius when focused
+                ),
+                floatingLabelBehavior: FloatingLabelBehavior.never,
+              ),
+              onChanged: (value) {
+                filterDoctors(value);
+              },
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: filteredDoctors.length,
+              itemBuilder: (context, index) {
+                return DoctorCard(
+                  doctor: filteredDoctors[index],
+                  onTap: () {
+                    String roomID = chatRoomId(
+                      filteredDoctors[index].name,
+                      filteredDoctors[index].name,
+                    );
+
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ChatScreen(
+                          doctor: filteredDoctors[index],
+                          chatRoomId: roomID,
+                          userMap: doctorMap,
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  //LIST ALL DOCTORS
-void listDoctors() async {
-  await Firebase.initializeApp();
-  log('listDoctors');
-  FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  QuerySnapshot querySnapshot = await _firestore.collection('doctors').get();
+  // LIST ALL DOCTORS
+  void listDoctors() async {
+    await Firebase.initializeApp();
+    log('listDoctors');
+    FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    QuerySnapshot querySnapshot = await _firestore.collection('doctors').get();
 
-  setState(() {
-    doctors = querySnapshot.docs.map((doc) {
-      doctorMap = doc.data() as Map<String, dynamic>; // Assign the value to the global doctorMap variable
-      log(doc.id); // Log the document ID
-      return Doctor(
-        id: doc.id, // Store the document ID in the id field of Doctor class
-        name: doctorMap!['name'],
-        specialization: doctorMap!['specialisation'],
-      );
-    }).toList();
-  });
+    setState(() {
+      doctors = querySnapshot.docs.map((doc) {
+        doctorMap = doc.data() as Map<String, dynamic>;
+        log(doc.id);
+        return Doctor(
+          id: doc.id,
+          name: doctorMap!['name'],
+          specialization: doctorMap!['specialisation'],
+        );
+      }).toList();
+      filteredDoctors = doctors;
+    });
 
-  log('doctors: $doctors');
-}
+    log('doctors: $doctors');
+  }
 
+  void filterDoctors(String query) {
+    setState(() {
+      filteredDoctors = doctors.where((doctor) {
+        final doctorName = doctor.name.toLowerCase();
+        final doctorSpecialization = doctor.specialization.toLowerCase();
+        final searchQuery = query.toLowerCase();
 
-//
+        return doctorName.contains(searchQuery) ||
+            doctorSpecialization.contains(searchQuery);
+      }).toList();
+    });
+  }
 
   String chatRoomId(String user1, String user2) {
     if (user1[0].toLowerCase().codeUnits[0] >
