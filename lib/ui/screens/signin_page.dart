@@ -18,7 +18,7 @@ class SignIn extends StatelessWidget {
     final TextEditingController emailController =
         TextEditingController(text: "user1@gmail.com");
     final TextEditingController passwordController =
-        TextEditingController(text: "123456");
+        TextEditingController(text: "*********");
 
     return Scaffold(
       body: Padding(
@@ -44,7 +44,7 @@ class SignIn extends StatelessWidget {
                 CustomTextfield(
                   obscureText: false,
                   hintText: 'Enter Email',
-                  icon: Icons.alternate_email,
+                  icon: Icons.email,
                   controller: emailController,
                 ),
                 CustomTextfield(
@@ -199,9 +199,8 @@ class SignIn extends StatelessWidget {
         Navigator.pushReplacement(
             context,
             PageTransition(
-                child: const RootPage(),
-                type: PageTransitionType.bottomToTop));
-        
+                child: const RootPage(), type: PageTransitionType.bottomToTop));
+
         // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
