@@ -6,6 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:plant/ui/onboarding_screen.dart';
 import 'package:plant/ui/root_page.dart';
+import 'package:plant/ui/screens/chat_screen.dart';
+import 'package:plant/ui/screens/doctor_list.dart';
+import 'package:plant/ui/screens/home_page.dart';
+import 'package:plant/ui/screens/signin_page.dart';
+import 'package:plant/ui/screens/signup_page.dart';
 
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -35,11 +40,11 @@ class MyApp extends StatelessWidget {
               log(snapshot.data.toString());
               // User is signed in
               log('User is signed in!');
-              return RootPage();
+              return SignUp();
             } else {
               // User is signed out
               log('User is currently signed out!');
-              return const OnboardingScreen();
+              return SignIn();
             }
           }
         },

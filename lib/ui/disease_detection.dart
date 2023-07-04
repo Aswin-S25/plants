@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:plant/constants.dart';
 import 'package:plant/data/disease.dart';
 import 'package:plant/data/symptoms.dart';
+import 'package:plant/ui/screens/doctor_list.dart';
 
 class SymptomSelectionScreen extends StatefulWidget {
   @override
@@ -117,6 +118,19 @@ class _SymptomSelectionScreenState extends State<SymptomSelectionScreen> {
                     ),
                   ),
                 ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Constants.primaryColor,
+                  onPrimary: Colors.white,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => DoctorListScreen()),
+                  );
+                },
+                child: const Text('Find a Doctor'),
+              ),
             ],
           ),
           actions: [
@@ -126,7 +140,7 @@ class _SymptomSelectionScreenState extends State<SymptomSelectionScreen> {
               },
               child: const Text(
                 'Close',
-                style: TextStyle(color: Colors.red),
+                style: TextStyle(color: Colors.black),
               ),
             ),
           ],
@@ -138,16 +152,16 @@ class _SymptomSelectionScreenState extends State<SymptomSelectionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text(
-          'Plant Disease Detect',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Constants.primaryColor,
-          ),
-        ),
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: Colors.white,
+      //   title: Text(
+      //     'Plant Disease Detect',
+      //     style: TextStyle(
+      //       fontWeight: FontWeight.bold,
+      //       color: Constants.primaryColor,
+      //     ),
+      //   ),
+      // ),
       body: Column(
         children: [
           Expanded(
@@ -155,48 +169,73 @@ class _SymptomSelectionScreenState extends State<SymptomSelectionScreen> {
               itemCount: allSymptoms.length,
               itemBuilder: (BuildContext context, int index) {
                 final symptom = allSymptoms[index];
-                return CheckboxListTile(
-                  title: Text(
-                    symptom,
-                    style: const TextStyle(fontSize: 16.0),
+                return Padding(
+                  padding: const EdgeInsets.only(
+                      bottom: 8.0, left: 12, right: 8.0, top: 8.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Constants.primaryColor.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: CheckboxListTile(
+                      title: Text(
+                        symptom,
+                        style: const TextStyle(fontSize: 16.0),
+                      ),
+                      value: selectedSymptoms.contains(symptom),
+                      onChanged: (bool? value) {
+                        _toggleSymptom(symptom);
+                      },
+                    ),
                   ),
-                  value: selectedSymptoms.contains(symptom),
-                  onChanged: (bool? value) {
-                    _toggleSymptom(symptom);
-                  },
                 );
               },
             ),
           ),
-          Container(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                ElevatedButton(
-                  onPressed: _showDiseaseAndRemedies,
-                  child: const Text('Show Disease and Remedies'),
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(Constants.primaryColor),
-                    padding: MaterialStateProperty.all(
-                      const EdgeInsets.symmetric(vertical: 16.0),
+          SizedBox(
+            width: double.infinity,
+            child: Container(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: _showDiseaseAndRemedies,
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                            Constants.primaryColor.withOpacity(.6)),
+                        padding: MaterialStateProperty.all(
+                          const EdgeInsets.symmetric(
+                              vertical: 14.0, horizontal: 16.0),
+                        ),
+                      ),
+                      child: const Text(
+                        'Show Disease and Remedies',
+                        style: TextStyle(fontSize: 16.0),
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 16.0),
-                ElevatedButton(
-                  onPressed: _clearSymptoms,
-                  child: const Text('Clear Symptoms'),
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                        const Color.fromARGB(255, 214, 25, 12)),
-                    padding: MaterialStateProperty.all(
-                      const EdgeInsets.symmetric(vertical: 16.0),
+                  const SizedBox(width: 10.0),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: _clearSymptoms,
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                          const Color.fromARGB(255, 75, 75, 75),
+                        ),
+                        padding: MaterialStateProperty.all(
+                          const EdgeInsets.symmetric(
+                              vertical: 22, horizontal: 16.0),
+                        ),
+                      ),
+                      child: const Text(
+                        'Clear Symptoms',
+                        style: TextStyle(fontSize: 16.0),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],

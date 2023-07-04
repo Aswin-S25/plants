@@ -6,12 +6,25 @@ import 'package:plant/constants.dart';
 import 'package:plant/services/googleauth.dart';
 import 'package:plant/ui/root_page.dart';
 import 'package:plant/ui/screens/signin_page.dart';
+import 'package:plant/ui/screens/signin_page.dart';
 import 'package:plant/ui/screens/widgets/custom_textfield.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:page_transition/page_transition.dart';
 
 class SignUp extends StatelessWidget {
   SignUp({Key? key}) : super(key: key);
   final _formKey = GlobalKey<FormState>();
+
+  final List<Map<String, dynamic>> _items = [
+    {
+      'value': 'User',
+      'label': 'User',
+    },
+    {
+      'value': 'Doctor',
+      'label': 'Doctor',
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +57,7 @@ class SignUp extends StatelessWidget {
                 CustomTextfield(
                   obscureText: false,
                   hintText: 'Enter Email',
-                  icon: Icons.alternate_email,
+                  icon: Icons.email,
                   controller: emailController,
                 ),
                 CustomTextfield(
@@ -59,8 +72,25 @@ class SignUp extends StatelessWidget {
                   icon: Icons.lock,
                   controller: passwordController,
                 ),
+                DropdownButtonFormField(
+                  items: _items
+                      .map((item) => DropdownMenuItem(
+                            child: Text(item['label']),
+                            value: item['value'],
+                          ))
+                      .toList(),
+                  onChanged: (value) {},
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide.none,
+                    ),
+                    hintText: 'Select Role',
+                    prefixIcon: Icon(Icons.person, color: Colors.grey[600]),
+                  ),
+                ),
                 const SizedBox(
-                  height: 10,
+                  height: 20,
                 ),
                 GestureDetector(
                   onTap: () {
@@ -226,4 +256,5 @@ class SignUp extends StatelessWidget {
       }
     }
   }
+
 }
