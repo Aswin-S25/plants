@@ -12,6 +12,7 @@ class ForgotPassword extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    final TextEditingController _emailController = TextEditingController();
 
     return Scaffold(
       body: Padding(
@@ -32,10 +33,11 @@ class ForgotPassword extends StatelessWidget {
               const SizedBox(
                 height: 30,
               ),
-              const CustomTextfield(
+              CustomTextfield(
                 obscureText: false,
                 hintText: 'Enter Email',
                 icon: Icons.alternate_email,
+                controller: _emailController,
               ),
               GestureDetector(
                 onTap: () {},
