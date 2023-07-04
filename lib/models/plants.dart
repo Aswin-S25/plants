@@ -1,5 +1,14 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:plant/ui/screens/widgets/plant_widget.dart';
+
+import '../ui/screens/detail_page.dart';
+
 class Plant {
-  final int plantId;
+  late  int plantId;
   final int price;
   final String size;
   final double rating;
@@ -9,24 +18,24 @@ class Plant {
   final String plantName;
   final String imageURL;
   bool isFavorated;
-  final String decription;
+  final String description;
   bool isSelected;
 
-  Plant(
-      {required this.plantId,
-        required this.price,
-        required this.category,
-        required this.plantName,
-        required this.size,
-        required this.rating,
-        required this.humidity,
-        required this.temperature,
-        required this.imageURL,
-        required this.isFavorated,
-        required this.decription,
-        required this.isSelected});
+  Plant({
+    required this.plantId,
+    required this.price,
+    required this.category,
+    required this.plantName,
+    required this.size,
+    required this.rating,
+    required this.humidity,
+    required this.temperature,
+    required this.imageURL,
+    required this.isFavorated,
+    required this.description,
+    required this.isSelected,
+  });
 
-  //List of Plants data
   static List<Plant> plantList = [
     Plant(
         plantId: 0,
@@ -37,10 +46,11 @@ class Plant {
         rating: 4.5,
         humidity: 34,
         temperature: '23 - 34',
-        imageURL: 'assets/images/plant-one.png',
+        imageURL:
+            'https://firebasestorage.googleapis.com/v0/b/plant-flutter.appspot.com/o/plants%2F07d05863-5a2f-4bdf-8532-5a888c9c97c2?alt=media&token=12fd70c9-8815-4596-9500-20640518410c',
         isFavorated: true,
-        decription:
-        'This plant is one of the best plant. It grows in most of the regions in the world and can survive'
+        description:
+            'This plant is one of the best plant. It grows in most of the regions in the world and can survive'
             'even the harshest weather condition.',
         isSelected: false),
     Plant(
@@ -52,10 +62,11 @@ class Plant {
         rating: 4.8,
         humidity: 56,
         temperature: '19 - 22',
-        imageURL: 'assets/images/plant-two.png',
+        imageURL:
+            'https://firebasestorage.googleapis.com/v0/b/plant-flutter.appspot.com/o/plants%2F07d05863-5a2f-4bdf-8532-5a888c9c97c2?alt=media&token=12fd70c9-8815-4596-9500-20640518410c',
         isFavorated: false,
-        decription:
-        'This plant is one of the best plant. It grows in most of the regions in the world and can survive'
+        description:
+            'This plant is one of the best plant. It grows in most of the regions in the world and can survive'
             'even the harshest weather condition.',
         isSelected: false),
     Plant(
@@ -67,10 +78,11 @@ class Plant {
         rating: 4.7,
         humidity: 34,
         temperature: '22 - 25',
-        imageURL: 'assets/images/plant-three.png',
+        imageURL:
+            'https://firebasestorage.googleapis.com/v0/b/plant-flutter.appspot.com/o/plants%2F07d05863-5a2f-4bdf-8532-5a888c9c97c2?alt=media&token=12fd70c9-8815-4596-9500-20640518410c',
         isFavorated: false,
-        decription:
-        'This plant is one of the best plant. It grows in most of the regions in the world and can survive'
+        description:
+            'This plant is one of the best plant. It grows in most of the regions in the world and can survive'
             'even the harshest weather condition.',
         isSelected: false),
     Plant(
@@ -82,10 +94,11 @@ class Plant {
         rating: 4.5,
         humidity: 35,
         temperature: '23 - 28',
-        imageURL: 'assets/images/plant-one.png',
+        imageURL:
+            'https://firebasestorage.googleapis.com/v0/b/plant-flutter.appspot.com/o/plants%2F07d05863-5a2f-4bdf-8532-5a888c9c97c2?alt=media&token=12fd70c9-8815-4596-9500-20640518410c',
         isFavorated: false,
-        decription:
-        'This plant is one of the best plant. It grows in most of the regions in the world and can survive'
+        description:
+            'This plant is one of the best plant. It grows in most of the regions in the world and can survive'
             'even the harshest weather condition.',
         isSelected: false),
     Plant(
@@ -97,83 +110,94 @@ class Plant {
         rating: 4.1,
         humidity: 66,
         temperature: '12 - 16',
-        imageURL: 'assets/images/plant-four.png',
+        imageURL:
+            'https://firebasestorage.googleapis.com/v0/b/plant-flutter.appspot.com/o/plants%2F07d05863-5a2f-4bdf-8532-5a888c9c97c2?alt=media&token=12fd70c9-8815-4596-9500-20640518410c',
         isFavorated: true,
-        decription:
-        'This plant is one of the best plant. It grows in most of the regions in the world and can survive'
-            'even the harshest weather condition.',
-        isSelected: false),
-    Plant(
-        plantId: 5,
-        price: 24,
-        category: 'Outdoor',
-        plantName: 'Meadow Sage',
-        size: 'Medium',
-        rating: 4.4,
-        humidity: 36,
-        temperature: '15 - 18',
-        imageURL: 'assets/images/plant-five.png',
-        isFavorated: false,
-        decription:
-        'This plant is one of the best plant. It grows in most of the regions in the world and can survive'
-            'even the harshest weather condition.',
-        isSelected: false),
-    Plant(
-        plantId: 6,
-        price: 19,
-        category: 'Garden',
-        plantName: 'Plumbago',
-        size: 'Small',
-        rating: 4.2,
-        humidity: 46,
-        temperature: '23 - 26',
-        imageURL: 'assets/images/plant-six.png',
-        isFavorated: false,
-        decription:
-        'This plant is one of the best plant. It grows in most of the regions in the world and can survive'
-            'even the harshest weather condition.',
-        isSelected: false),
-    Plant(
-        plantId: 7,
-        price: 23,
-        category: 'Garden',
-        plantName: 'Tritonia',
-        size: 'Medium',
-        rating: 4.5,
-        humidity: 34,
-        temperature: '21 - 24',
-        imageURL: 'assets/images/plant-seven.png',
-        isFavorated: false,
-        decription:
-        'This plant is one of the best plant. It grows in most of the regions in the world and can survive'
-            'even the harshest weather condition.',
-        isSelected: false),
-    Plant(
-        plantId: 8,
-        price: 46,
-        category: 'Recommended',
-        plantName: 'Tritonia',
-        size: 'Medium',
-        rating: 4.7,
-        humidity: 46,
-        temperature: '21 - 25',
-        imageURL: 'assets/images/plant-eight.png',
-        isFavorated: false,
-        decription:
-        'This plant is one of the best plant. It grows in most of the regions in the world and can survive'
+        description:
+            'This plant is one of the best plant. It grows in most of the regions in the world and can survive'
             'even the harshest weather condition.',
         isSelected: false),
   ];
 
-  //Get the favorated items
-  static List<Plant> getFavoritedPlants(){
+  static void updatePlantList(List<Plant> newList) {
+    for (int i = 0; i < newList.length; i++) {
+      newList[i].plantId = plantList.length ;
+      plantList.add(newList[i]);
+    }
+  }
+
+  static List<Plant> getFavoritedPlants() {
     List<Plant> _travelList = Plant.plantList;
     return _travelList.where((element) => element.isFavorated == true).toList();
   }
 
-  //Get the cart items
-  static List<Plant> addedToCartPlants(){
+  static List<Plant> addedToCartPlants() {
     List<Plant> _selectedPlants = Plant.plantList;
-    return _selectedPlants.where((element) => element.isSelected == true).toList();
+    return _selectedPlants
+        .where((element) => element.isSelected == true)
+        .toList();
+  }
+}
+
+class Addplant extends StatelessWidget {
+  const Addplant({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+        stream: FirebaseFirestore.instance.collection('plants').snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            QuerySnapshot<Map<String, dynamic>> querySnapshot = snapshot.data!;
+            List<QueryDocumentSnapshot<Map<String, dynamic>>> documents =
+                querySnapshot.docs;
+
+            List<Plant> updatedPlantList = documents.map((doc) {
+              Map<String, dynamic> data = doc.data();
+              int id = Plant.plantList.length;
+              return Plant(
+                plantId: id,
+                price: data['price'],
+                category: data['category'] as String,
+                plantName: data['name'] as String,
+                size: data['size'] as String,
+                rating: 4.5,
+                humidity: 36,
+                temperature: data['temperature'] as String,
+                imageURL: data['url'] as String,
+                isFavorated: false,
+                description: data['description'] as String,
+                isSelected: false,
+              );
+            }).toList();
+
+            Plant.updatePlantList(updatedPlantList);
+
+            log('${Plant.plantList.length.toString()} plants found');
+
+            return ListView.builder(
+                itemCount: Plant.plantList.length,
+                scrollDirection: Axis.vertical,
+                physics: const BouncingScrollPhysics(),
+                itemBuilder: (BuildContext context, int index) {
+                  return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            PageTransition(
+                                child: DetailPage(
+                                    plantId: Plant.plantList[index].plantId),
+                                type: PageTransitionType.bottomToTop));
+                      },
+                      child: PlantWidget(
+                          index: index, plantList: Plant.plantList));
+                });
+          }
+
+          return const Center(child: CircularProgressIndicator());
+        },
+      ),
+    );
   }
 }

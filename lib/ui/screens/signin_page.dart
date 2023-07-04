@@ -1,12 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:plant/constants.dart';
-import 'package:plant/models/plants.dart';
 import 'package:plant/ui/root_page.dart';
 import 'package:plant/ui/screens/forgot_password.dart';
 import 'package:plant/ui/screens/signup_page.dart';
 import 'package:plant/ui/screens/widgets/custom_textfield.dart';
-import 'package:plant/ui/screens/widgets/plant_widget.dart';
 import 'package:page_transition/page_transition.dart';
 
 class SignIn extends StatelessWidget {
