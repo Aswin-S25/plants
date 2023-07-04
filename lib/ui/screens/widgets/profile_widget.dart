@@ -1,8 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:plant/constants.dart';
-import 'package:plant/models/plants.dart';
-import 'package:plant/ui/screens/widgets/plant_widget.dart';
+
 
 class ProfileWidget extends StatelessWidget {
   final IconData icon;

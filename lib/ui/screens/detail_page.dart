@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:plant/constants.dart';
 import 'package:plant/models/plants.dart';
-import 'package:plant/ui/screens/widgets/plant_widget.dart';
+import 'package:plant/ui/screens/notification_screen.dart';
 
 class DetailPage extends StatefulWidget {
   final int plantId;
@@ -98,8 +99,9 @@ class _DetailPageState extends State<DetailPage> {
                     top: 10,
                     left: 0,
                     child: SizedBox(
+                      width: 170,
                       height: 350,
-                      child: Image.network(_plantList[widget.plantId].imageURL),
+                      child: Image.network(_plantList[widget.plantId].imageURL, fit: BoxFit.cover,),
                     ),
                   ),
                   Positioned(
@@ -225,16 +227,6 @@ class _DetailPageState extends State<DetailPage> {
             Container(
               height: 50,
               width: 50,
-              child: IconButton(onPressed: (){
-                setState(() {
-                  bool isSelected = toggleIsSelected(_plantList[widget.plantId].isSelected);
-
-                  _plantList[widget.plantId].isSelected = isSelected;
-                });
-              }, icon: Icon(
-                Icons.shopping_cart,
-                color: _plantList[widget.plantId].isSelected == true ? Colors.white : Constants.primaryColor,
-              )),
               decoration: BoxDecoration(
                   color: _plantList[widget.plantId].isSelected == true ? Constants.primaryColor.withOpacity(.5) : Colors.white,
                   borderRadius: BorderRadius.circular(50),
@@ -245,28 +237,50 @@ class _DetailPageState extends State<DetailPage> {
                       color: Constants.primaryColor.withOpacity(.3),
                     ),
                   ]),
+              child: IconButton(onPressed: (){
+                setState(() {
+                  bool isSelected = toggleIsSelected(_plantList[widget.plantId].isSelected);
+
+                  _plantList[widget.plantId].isSelected = isSelected;
+                });
+              }, icon: Icon(
+                Icons.shopping_cart,
+                color: _plantList[widget.plantId].isSelected == true ? Colors.white : Constants.primaryColor,
+              )),
             ),
             const SizedBox(
               width: 20,
             ),
             Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                    color: Constants.primaryColor,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        offset: const Offset(0, 1),
-                        blurRadius: 5,
-                        color: Constants.primaryColor.withOpacity(.3),
-                      )
-                    ]),
-                child: const Center(
-                  child: Text(
-                    'BUY NOW',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20.0,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    PageTransition(
+                      type: PageTransitionType.bottomToTop,
+                      duration: const Duration(milliseconds: 500),
+                      child: NotificationPage()
+                    ),
+                  );
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Constants.primaryColor,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          offset: const Offset(0, 1),
+                          blurRadius: 5,
+                          color: Constants.primaryColor.withOpacity(.3),
+                        )
+                      ]),
+                  child: const Center(
+                    child: Text(
+                      'Set Notification',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.0,
+                      ),
                     ),
                   ),
                 ),

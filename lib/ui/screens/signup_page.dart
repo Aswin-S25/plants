@@ -1,10 +1,12 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:plant/constants.dart';
-import 'package:plant/models/plants.dart';
+import 'package:plant/services/googleauth.dart';
+import 'package:plant/ui/root_page.dart';
 import 'package:plant/ui/screens/signin_page.dart';
 import 'package:plant/ui/screens/widgets/custom_textfield.dart';
-import 'package:plant/ui/screens/widgets/plant_widget.dart';
 import 'package:page_transition/page_transition.dart';
 
 class SignUp extends StatelessWidget {
@@ -62,7 +64,8 @@ class SignUp extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    registerUser(context, emailController.text, passwordController.text, nameController.text);
+                    registerUser(context, emailController.text,
+                        passwordController.text, nameController.text);
                   },
                   child: Container(
                     width: size.width,
@@ -99,28 +102,48 @@ class SignUp extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                Container(
-                  width: size.width,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Constants.primaryColor),
-                      borderRadius: BorderRadius.circular(10)),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      SizedBox(
-                        height: 30,
-                        child: Image.asset('assets/images/google.png'),
-                      ),
-                      Text(
-                        'Sign Up with Google',
-                        style: TextStyle(
-                          color: Constants.blackColor,
-                          fontSize: 18.0,
+                GestureDetector(
+                  onTap: () {
+                    log('Google Sign In');
+                    GoogleSignInProvider().signInWithGoogle().then((user) {
+                      if (user != null) {
+                        Navigator.pushReplacement(
+                            context,
+                            PageTransition(
+                                child: SignUp(),
+                                type: PageTransitionType.bottomToTop));
+                      } else {
+                        Navigator.pushReplacement(
+                            context,
+                            PageTransition(
+                                child: const RootPage(),
+                                type: PageTransitionType.bottomToTop));
+                      }
+                    });
+                  },
+                  child: Container(
+                    width: size.width,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Constants.primaryColor),
+                        borderRadius: BorderRadius.circular(10)),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        SizedBox(
+                          height: 30,
+                          child: Image.asset('assets/images/google.png'),
                         ),
-                      ),
-                    ],
+                        Text(
+                          'Sign Up with Google',
+                          style: TextStyle(
+                            color: Constants.blackColor,
+                            fontSize: 18.0,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(
@@ -164,8 +187,6 @@ class SignUp extends StatelessWidget {
   //register user
   void registerUser(
       BuildContext context, String email, String password, String name) async {
-    
-
     // validity check
     if (_formKey.currentState!.validate()) {
       //register user
@@ -181,8 +202,7 @@ class SignUp extends StatelessWidget {
         Navigator.pushReplacement(
             context,
             PageTransition(
-                child: const SignIn(),
-                type: PageTransitionType.bottomToTop));
+                child: const SignIn(), type: PageTransitionType.bottomToTop));
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
           ScaffoldMessenger.of(context).showSnackBar(

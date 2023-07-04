@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:plant/constants.dart';
-import 'package:plant/models/plants.dart';
 import 'package:plant/ui/screens/signin_page.dart';
 import 'package:plant/ui/screens/widgets/custom_textfield.dart';
-import 'package:plant/ui/screens/widgets/plant_widget.dart';
 import 'package:page_transition/page_transition.dart';
 
 class ForgotPassword extends StatelessWidget {

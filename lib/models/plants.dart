@@ -146,7 +146,7 @@ class Addplant extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-        stream: FirebaseFirestore.instance.collection('plants').snapshots(),
+        stream: FirebaseFirestore.instance.collection('plants').snapshots() ,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             QuerySnapshot<Map<String, dynamic>> querySnapshot = snapshot.data!;

@@ -1,12 +1,9 @@
-import 'dart:developer';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter/material.dart';
 import 'package:plant/constants.dart';
 import 'package:plant/models/plants.dart';
 import 'package:plant/ui/screens/detail_page.dart';
-import 'package:plant/ui/screens/widgets/plant_widget.dart';
 import 'package:page_transition/page_transition.dart';
 
 class HomePage extends StatefulWidget {

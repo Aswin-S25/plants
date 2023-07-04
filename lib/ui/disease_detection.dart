@@ -33,14 +33,14 @@ class _SymptomSelectionScreenState extends State<SymptomSelectionScreen> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('No Symptoms Selected'),
-            content: Text('Please select at least one symptom.'),
+            title: const Text('No Symptoms Selected'),
+            content: const Text('Please select at least one symptom.'),
             actions: [
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('Close'),
+                child: const Text('Close'),
               ),
             ],
           );
@@ -71,14 +71,14 @@ class _SymptomSelectionScreenState extends State<SymptomSelectionScreen> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('No Matching Diseases Found'),
-            content: Text('No diseases match the selected symptoms.'),
+            title: const Text('No Matching Diseases Found'),
+            content: const Text('No diseases match the selected symptoms.'),
             actions: [
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('Close'),
+                child: const Text('Close'),
               ),
             ],
           );
@@ -92,7 +92,7 @@ class _SymptomSelectionScreenState extends State<SymptomSelectionScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(
+          title: const Text(
             'Matched Diseases',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
@@ -101,17 +101,17 @@ class _SymptomSelectionScreenState extends State<SymptomSelectionScreen> {
             children: [
               for (var disease in matchedDiseases)
                 Card(
-                  margin: EdgeInsets.symmetric(vertical: 8.0),
+                  margin: const EdgeInsets.symmetric(vertical: 8.0),
                   child: Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           disease.name,
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(height: 8.0),
+                        const SizedBox(height: 8.0),
                         Text(disease.remedy),
                       ],
                     ),
@@ -124,7 +124,7 @@ class _SymptomSelectionScreenState extends State<SymptomSelectionScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text(
+              child: const Text(
                 'Close',
                 style: TextStyle(color: Colors.red),
               ),
@@ -158,7 +158,7 @@ class _SymptomSelectionScreenState extends State<SymptomSelectionScreen> {
                 return CheckboxListTile(
                   title: Text(
                     symptom,
-                    style: TextStyle(fontSize: 16.0),
+                    style: const TextStyle(fontSize: 16.0),
                   ),
                   value: selectedSymptoms.contains(symptom),
                   onChanged: (bool? value) {
@@ -169,30 +169,30 @@ class _SymptomSelectionScreenState extends State<SymptomSelectionScreen> {
             ),
           ),
           Container(
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 ElevatedButton(
                   onPressed: _showDiseaseAndRemedies,
-                  child: Text('Show Disease and Remedies'),
+                  child: const Text('Show Disease and Remedies'),
                   style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all(Constants.primaryColor),
                     padding: MaterialStateProperty.all(
-                      EdgeInsets.symmetric(vertical: 16.0),
+                      const EdgeInsets.symmetric(vertical: 16.0),
                     ),
                   ),
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
                 ElevatedButton(
                   onPressed: _clearSymptoms,
-                  child: Text('Clear Symptoms'),
+                  child: const Text('Clear Symptoms'),
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(
-                        Color.fromARGB(255, 214, 25, 12)),
+                        const Color.fromARGB(255, 214, 25, 12)),
                     padding: MaterialStateProperty.all(
-                      EdgeInsets.symmetric(vertical: 16.0),
+                      const EdgeInsets.symmetric(vertical: 16.0),
                     ),
                   ),
                 ),
