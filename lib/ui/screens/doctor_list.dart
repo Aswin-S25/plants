@@ -29,44 +29,88 @@ class _DoctorListScreenState extends State<DoctorListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         title: Text(
           'DOCTORS',
           style: TextStyle(
-            color: Constants.primaryColor,
+            color: Colors.blueGrey[500],
             fontWeight: FontWeight.bold,
           ),
         ),
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: TextField(
-              controller: searchController,
-              decoration: InputDecoration(
-                labelText: 'Search Doctors',
-                prefixIcon: Icon(Icons.search, color: Constants.primaryColor),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Constants.primaryColor,
-                  ),
-                  borderRadius: BorderRadius.circular(
-                      10.0), // Set the border radius when not focused
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(
-                    color: Color.fromARGB(255, 18, 19, 18),
-                  ),
-                  borderRadius: BorderRadius.circular(
-                      10.0), // Set the border radius when focused
-                ),
-                floatingLabelBehavior: FloatingLabelBehavior.never,
-              ),
-              onChanged: (value) {
-                filterDoctors(value);
-              },
+          // Padding(
+          //   padding: const EdgeInsets.all(10),
+          //   child: TextField(
+          //     controller: searchController,
+          //     decoration: InputDecoration(
+          //       labelText: 'Search Doctors',
+          //       prefixIcon: Icon(Icons.search, color: Constants.primaryColor),
+          //       border: OutlineInputBorder(
+          //         borderSide: BorderSide(
+          //           color: Constants.primaryColor,
+          //         ),
+          //         borderRadius: BorderRadius.circular(
+          //             10.0), // Set the border radius when not focused
+          //       ),
+          //       focusedBorder: OutlineInputBorder(
+          //         borderSide: const BorderSide(
+          //           color: Color.fromARGB(255, 18, 19, 18),
+          //         ),
+          //         borderRadius: BorderRadius.circular(
+          //             10.0), // Set the border radius when focused
+          //       ),
+          //       floatingLabelBehavior: FloatingLabelBehavior.never,
+          //     ),
+          //     onChanged: (value) {
+          //       filterDoctors(value);
+          //     },
+          //   ),
+          // ),
+          const SizedBox(
+            height: 10,
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
             ),
+            width: MediaQuery.of(context).size.width * .9,
+            decoration: BoxDecoration(
+              color: Constants.primaryColor.withOpacity(.1),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.search,
+                  color: Colors.black54.withOpacity(.6),
+                ),
+                Expanded(
+                  child: TextField(
+                    showCursor: false,
+                    decoration: const InputDecoration(
+                      hintText: 'Search Doctors',
+                      border: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                    ),
+                    onChanged: (value) {
+                      filterDoctors(value);
+                    },
+                  ),
+                ),
+                Icon(
+                  Icons.mic,
+                  color: Colors.black54.withOpacity(.6),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(
+            height: 10,
           ),
           Expanded(
             child: ListView.builder(

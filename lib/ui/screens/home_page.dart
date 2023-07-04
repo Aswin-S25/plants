@@ -25,13 +25,13 @@ class _HomePageState extends State<HomePage> {
     List<Plant> plantList = Plant.plantList;
 
     //Plants category
-    List<String> plantTypes = [
-      'Recommended',
-      'Indoor',
-      'Outdoor',
-      'Garden',
-      'Supplement',
-    ];
+    // List<String> plantTypes = [
+    //   'Recommended',
+    //   'Indoor',
+    //   'Outdoor',
+    //   'Garden',
+    //   'Supplement',
+    // ];
 
     //Toggle Favorite button
     bool toggleIsFavorated(bool isFavorited) {
@@ -84,37 +84,40 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            height: 50.0,
-            width: size.width,
-            child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: plantTypes.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectedIndex = index;
-                        });
-                      },
-                      child: Text(
-                        plantTypes[index],
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: selectedIndex == index
-                              ? FontWeight.bold
-                              : FontWeight.w300,
-                          color: selectedIndex == index
-                              ? Constants.primaryColor
-                              : Constants.blackColor,
-                        ),
-                      ),
-                    ),
-                  );
-                }),
+          // Container(
+          //   padding: const EdgeInsets.symmetric(horizontal: 12),
+          //   height: 50.0,
+          //   width: size.width,
+          //   child: ListView.builder(
+          //       scrollDirection: Axis.horizontal,
+          //       itemCount: plantTypes.length,
+          //       itemBuilder: (BuildContext context, int index) {
+          //         return Padding(
+          //           padding: const EdgeInsets.all(8.0),
+          //           child: GestureDetector(
+          //             onTap: () {
+          //               setState(() {
+          //                 selectedIndex = index;
+          //               });
+          //             },
+          //             child: Text(
+          //               plantTypes[index],
+          //               style: TextStyle(
+          //                 fontSize: 16.0,
+          //                 fontWeight: selectedIndex == index
+          //                     ? FontWeight.bold
+          //                     : FontWeight.w300,
+          //                 color: selectedIndex == index
+          //                     ? Constants.primaryColor
+          //                     : Constants.blackColor,
+          //               ),
+          //             ),
+          //           ),
+          //         );
+          //       }),
+          // ),
+          const SizedBox(
+            height: 20,
           ),
           SizedBox(
             height: size.height * .3,
@@ -235,11 +238,9 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            height: size.height * .5,
-            child: const Addplant()
-          ),
-          
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              height: size.height * .5,
+              child: const Addplant()),
         ],
       ),
     ));

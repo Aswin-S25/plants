@@ -12,8 +12,6 @@
 
 //   DoctorCard({required this.doctor, required this.onTap});
 
-
-
 //   @override
 //   Widget build(BuildContext context) {
 //     return ListTile(
@@ -41,30 +39,40 @@ class DoctorCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: CircleAvatar(
-        backgroundImage: AssetImage('assets/images/doctor1.jpg'), // Replace with your desired doctor's image
-        radius: 30,
-      ),
-      title: Text(
-        doctor.name,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          color: Constants.primaryColor,
+    return Padding(
+      padding: const EdgeInsets.only(top: 8, left: 15, right: 15, bottom: 8),
+      child: Container(
+        // padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Constants.primaryColor.withOpacity(.1),
+          borderRadius: BorderRadius.circular(10),
         ),
-      ),
-      subtitle: Text(
-        doctor.specialization,
-        style: const TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.w500,
+        child: ListTile(
+          leading: const CircleAvatar(
+            backgroundImage: AssetImage(
+                'assets/images/doctor1.jpg'), // Replace with your desired doctor's image
+            radius: 30,
+          ),
+          title: Text(
+            doctor.name,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Constants.primaryColor,
+            ),
+          ),
+          subtitle: Text(
+            doctor.specialization,
+            style: const TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          trailing: IconButton(
+            icon: const Icon(Icons.message),
+            onPressed: onTap,
+          ),
         ),
-      ),
-      trailing: IconButton(
-        icon: Icon(Icons.message),
-        onPressed: onTap,
       ),
     );
   }
 }
-

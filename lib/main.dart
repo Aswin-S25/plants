@@ -7,6 +7,8 @@ import 'package:plant/ui/onboarding_screen.dart';
 import 'package:plant/ui/root_page.dart';
 import 'package:plant/ui/screens/chat_screen.dart';
 import 'package:plant/ui/screens/doctor_list.dart';
+import 'package:plant/ui/screens/home_page.dart';
+import 'package:plant/ui/screens/signin_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,11 +33,11 @@ class MyApp extends StatelessWidget {
             if (snapshot.hasData && snapshot.data != null) {
               // User is signed in
               log('User is signed in!');
-              return DoctorListScreen();
+              return RootPage();
             } else {
               // User is signed out
               log('User is currently signed out!');
-              return  DoctorListScreen();
+              return  SignIn();
             }
           }
         },

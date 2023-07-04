@@ -6,8 +6,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:plant/constants.dart';
 import 'package:plant/models/doctors.dart';
-import 'package:flutter_chat_bubble/bubble_type.dart';
-import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:plant/ui/screens/widgets/single_msg.dart';
 
 class ChatScreen extends StatelessWidget {
@@ -33,18 +31,36 @@ class ChatScreen extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
-          leading: const CircleAvatar(
-            radius: 10,
-            backgroundImage: AssetImage(
-                'assets/images/doctor1.jpg'), // Replace with the image URL or asset path
-          ),
-          title: Text(
-            'Chat with ${doctor!.name}',
-            style: TextStyle(
-              color: Constants.primaryColor,
-              fontWeight: FontWeight.bold,
-            ),
+          automaticallyImplyLeading: false,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          elevation: 0.0,
+          title: Row(
+            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              // IconButton(
+              //   onPressed: () {
+              //     Navigator.pop(context);
+              //   },
+              //   icon: const Icon(
+              //     Icons.arrow_back_ios,
+              //     color: Colors.blueGrey,
+              //   ),
+              // ),
+              const CircleAvatar(
+                radius: 20,
+                backgroundImage: AssetImage('assets/images/doctor1.jpg'),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Text(
+                'Chat with ${doctor!.name}',
+                style: TextStyle(
+                  color: Colors.blueGrey[700],
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
         ),
         body: SingleChildScrollView(
@@ -53,6 +69,10 @@ class ChatScreen extends StatelessWidget {
               Container(
                   height: MediaQuery.of(context).size.height / 1.3,
                   width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    color: Constants.primaryColor.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                     stream: _firestore
                         .collection('doctors')
@@ -60,7 +80,7 @@ class ChatScreen extends StatelessWidget {
                         .collection('messages')
                         .doc(doctor!.id)
                         .collection('chats')
-                        .orderBy('time', descending: false)
+                        .orderBy('time', descending: true)
                         .snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
@@ -119,14 +139,17 @@ class ChatScreen extends StatelessWidget {
                       }
                     },
                   )),
-              const SizedBox(height: 10),
+              // const SizedBox(height: 10),
 
               // Input
               Container(
                   height: MediaQuery.of(context).size.height / 10,
                   width: MediaQuery.of(context).size.width,
                   alignment: Alignment.bottomCenter,
-                  color: Colors.white,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.5),
+                    // borderRadius: BorderRadius.circular(10),
+                  ),
                   child: Container(
                       height: MediaQuery.of(context).size.height / 12,
                       width: MediaQuery.of(context).size.width / 1.2,
@@ -138,11 +161,17 @@ class ChatScreen extends StatelessWidget {
                             child: TextField(
                               controller: _messageController,
                               decoration: InputDecoration(
+                                fillColor:
+                                    Constants.primaryColor.withOpacity(0.1),
+                                filled: true,
+                                focusColor:
+                                    Constants.primaryColor.withOpacity(0.1),
+                                hoverColor:
+                                    Constants.primaryColor.withOpacity(0.1),
                                 hintText: 'Type a message',
                                 border: OutlineInputBorder(
-                                  // borderSide:
-                                  //     BorderSide(color: Colors.),
-                                  borderRadius: BorderRadius.circular(12),
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide.none,
                                 ),
                               ),
                             ),
