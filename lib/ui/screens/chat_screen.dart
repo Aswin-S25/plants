@@ -14,12 +14,14 @@ class ChatScreen extends StatelessWidget {
   final Doctor? doctor;
   final Map<String, dynamic>? userMap;
   final String? chatRoomId;
+  final String? profileImage;
 
   ChatScreen({
     Key? key,
     this.doctor,
     this.userMap,
     this.chatRoomId,
+    this.profileImage,
   });
 
   TextEditingController _messageController = TextEditingController();
@@ -32,6 +34,11 @@ class ChatScreen extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
+          leading: const CircleAvatar(
+            radius: 10,
+            backgroundImage: AssetImage(
+                'assets/images/doctor1.jpg'), // Replace with the image URL or asset path
+          ),
           title: Text(
             'Chat with ${doctor!.name}',
             style: TextStyle(
