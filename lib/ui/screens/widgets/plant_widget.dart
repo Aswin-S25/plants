@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:plant/constants.dart';
 import 'package:plant/models/plants.dart';
@@ -8,7 +7,9 @@ import 'package:page_transition/page_transition.dart';
 
 class PlantWidget extends StatelessWidget {
   const PlantWidget({
-    Key? key, required this.index, required this.plantList,
+    Key? key,
+    required this.index,
+    required this.plantList,
   }) : super(key: key);
 
   final int index;
@@ -58,8 +59,7 @@ class PlantWidget extends StatelessWidget {
                   right: 0,
                   child: SizedBox(
                     height: 80.0,
-                    child:
-                    Image.network(plantList[index].imageURL),
+                    child: Image.network(plantList[index].imageURL),
                   ),
                 ),
                 Positioned(

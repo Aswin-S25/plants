@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class SingleMessage extends StatelessWidget {
   final String? message;
   final bool? isMe;
-  const SingleMessage({super.key, required this.message, required this.isMe});
+  const SingleMessage({ required this.message, required this.isMe});
 
   @override
   Widget build(BuildContext context) {

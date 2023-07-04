@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:plant/constants.dart';
 import 'package:plant/models/plants.dart';
+import 'package:plant/ui/screens/doctor_list.dart';
 import 'package:plant/ui/screens/widgets/plant_widget.dart';
 import 'package:plant/ui/screens/widgets/profile_widget.dart';
 
@@ -63,32 +64,37 @@ class ProfilePage extends StatelessWidget {
               height: 30,
             ),
             SizedBox(
-              height: size.height * .7,
+              // height: size.height * .7,
               width: size.width,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: const [
-                  ProfileWidget(
+                children: [
+                  const ProfileWidget(
                     icon: Icons.person,
                     title: 'My Profile',
                   ),
                   ProfileWidget(
-                    icon: Icons.settings,
-                    title: 'Settings',
+                    icon: Icons.medical_information_outlined,
+                    title: 'Find Doctor',
+                    route: DoctorListScreen(),
                   ),
-                  ProfileWidget(
+                  const ProfileWidget(
                     icon: Icons.notifications,
                     title: 'Notifications',
                   ),
-                  ProfileWidget(
-                    icon: Icons.chat,
-                    title: 'FAQs',
+                  const ProfileWidget(
+                    icon: Icons.settings,
+                    title: 'Settings',
                   ),
-                  ProfileWidget(
-                    icon: Icons.share,
-                    title: 'Share',
-                  ),
-                  ProfileWidget(
+                  // const ProfileWidget(
+                  //   icon: Icons.chat,
+                  //   title: 'FAQs',
+                  // ),
+                  // const ProfileWidget(
+                  //   icon: Icons.share,
+                  //   title: 'Share',
+                  // ),
+                  const ProfileWidget(
                     icon: Icons.logout,
                     title: 'Log Out',
                   ),
