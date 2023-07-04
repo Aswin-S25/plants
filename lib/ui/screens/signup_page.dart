@@ -1,15 +1,27 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:plant/constants.dart';
-import 'package:plant/models/plants.dart';
 import 'package:plant/ui/screens/signin_page.dart';
 import 'package:plant/ui/screens/widgets/custom_textfield.dart';
-import 'package:plant/ui/screens/widgets/plant_widget.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:page_transition/page_transition.dart';
 
 class SignUp extends StatelessWidget {
   SignUp({Key? key}) : super(key: key);
   final _formKey = GlobalKey<FormState>();
+
+  final List<Map<String, dynamic>> _items = [
+    {
+      'value': 'User',
+      'label': 'User',
+    },
+    {
+      'value': 'Doctor',
+      'label': 'Doctor',
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +54,7 @@ class SignUp extends StatelessWidget {
                 CustomTextfield(
                   obscureText: false,
                   hintText: 'Enter Email',
-                  icon: Icons.alternate_email,
+                  icon: Icons.email,
                   controller: emailController,
                 ),
                 CustomTextfield(
@@ -57,12 +69,30 @@ class SignUp extends StatelessWidget {
                   icon: Icons.lock,
                   controller: passwordController,
                 ),
+                DropdownButtonFormField(
+                  items: _items
+                      .map((item) => DropdownMenuItem(
+                            child: Text(item['label']),
+                            value: item['value'],
+                          ))
+                      .toList(),
+                  onChanged: (value) {},
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide.none,
+                    ),
+                    hintText: 'Select Role',
+                    prefixIcon: Icon(Icons.person, color: Colors.grey[600]),
+                  ),
+                ),
                 const SizedBox(
-                  height: 10,
+                  height: 20,
                 ),
                 GestureDetector(
                   onTap: () {
-                    registerUser(context, emailController.text, passwordController.text, nameController.text);
+                    registerUser(context, emailController.text,
+                        passwordController.text, nameController.text);
                   },
                   child: Container(
                     width: size.width,
@@ -104,8 +134,8 @@ class SignUp extends StatelessWidget {
                   decoration: BoxDecoration(
                       border: Border.all(color: Constants.primaryColor),
                       borderRadius: BorderRadius.circular(10)),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 10, vertical: 15),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -164,8 +194,6 @@ class SignUp extends StatelessWidget {
   //register user
   void registerUser(
       BuildContext context, String email, String password, String name) async {
-    
-
     // validity check
     if (_formKey.currentState!.validate()) {
       //register user
@@ -181,8 +209,7 @@ class SignUp extends StatelessWidget {
         Navigator.pushReplacement(
             context,
             PageTransition(
-                child: const SignIn(),
-                type: PageTransitionType.bottomToTop));
+                child: const SignIn(), type: PageTransitionType.bottomToTop));
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -206,4 +233,5 @@ class SignUp extends StatelessWidget {
       }
     }
   }
+
 }
