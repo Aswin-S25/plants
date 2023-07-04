@@ -33,7 +33,7 @@ class ChatScreen extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.white,
           title: Text(
-            'Chat with ${doctor!.id}',
+            'Chat with ${doctor!.name}',
             style: TextStyle(
               color: Constants.primaryColor,
               fontWeight: FontWeight.bold,
@@ -79,7 +79,9 @@ class ChatScreen extends StatelessWidget {
                             //     snapshot.data!.docs[index].data()
                             //         as Map<String, dynamic>;
 
-                            return SingleMessage(message:snapshot.data!.docs[index]['message'], isMe: isMe);
+                            return SingleMessage(
+                                message: snapshot.data!.docs[index]['message'],
+                                isMe: isMe);
                             // ChatBubble(
                             //   alignment: (map['sendBy'] == userMap!['name'])
                             //       ? Alignment.centerRight
