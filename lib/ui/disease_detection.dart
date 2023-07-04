@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:plant/constants.dart';
 import 'package:plant/data/disease.dart';
 import 'package:plant/data/symptoms.dart';
+import 'package:plant/ui/screens/doctor_list.dart';
 
 class SymptomSelectionScreen extends StatefulWidget {
   @override
@@ -117,6 +118,19 @@ class _SymptomSelectionScreenState extends State<SymptomSelectionScreen> {
                     ),
                   ),
                 ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Constants.primaryColor,
+                  onPrimary: Colors.white,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => DoctorListScreen()),
+                  );
+                },
+                child: const Text('Find a Doctor'),
+              ),
             ],
           ),
           actions: [
