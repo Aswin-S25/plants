@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:plant/constants.dart';
 import 'package:plant/models/plants.dart';
@@ -18,6 +16,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     int selectedIndex = 0;
     Size size = MediaQuery.of(context).size;
+    String searchQuery = '';
 
     List<Plant> plantList = Plant.plantList;
 

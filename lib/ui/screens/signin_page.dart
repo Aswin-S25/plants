@@ -1,24 +1,25 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:plant/constants.dart';
 import 'package:plant/ui/root_page.dart';
+import 'package:plant/ui/screens/doctor_home.dart';
 import 'package:plant/ui/screens/forgot_password.dart';
 import 'package:plant/ui/screens/signup_page.dart';
 import 'package:plant/ui/screens/widgets/custom_textfield.dart';
 import 'package:page_transition/page_transition.dart';
 
 class SignIn extends StatelessWidget {
-  const SignIn({Key? key}) : super(key: key);
+  SignIn({Key? key}) : super(key: key);
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-    final TextEditingController emailController =
-        TextEditingController(text: "user1@gmail.com");
-    final TextEditingController passwordController =
-        TextEditingController(text: "*********");
+    final TextEditingController emailController = TextEditingController();
+    final TextEditingController passwordController = TextEditingController();
 
     return Scaffold(
       body: Padding(
@@ -191,15 +192,28 @@ class SignIn extends StatelessWidget {
   void loginwithEmailandPassword(
       String email, String password, BuildContext context) async {
     try {
+      log('email: $email, password: $password');
       // ignore: unused_local_variable
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
       if (userCredential.user != null) {
+        if (email == "john@gmail.com" ||
+            email == "paul@gmail.com" ||
+            email == "appukuttan@gmail.com") {
+
+          Navigator.pushReplacement(
+              context,
+              PageTransition(
+                  child: DoctorHome(), type: PageTransitionType.bottomToTop));
+        } else {
+          
+          Navigator.pushReplacement(
+              context,
+              PageTransition(
+                  child: const RootPage(),
+                  type: PageTransitionType.bottomToTop));
+        }
         // ignore: use_build_context_synchronously
-        Navigator.pushReplacement(
-            context,
-            PageTransition(
-                child: const RootPage(), type: PageTransitionType.bottomToTop));
 
         // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(

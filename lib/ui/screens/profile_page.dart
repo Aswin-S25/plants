@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:plant/constants.dart';
 import 'package:plant/models/plants.dart';
 import 'package:plant/ui/screens/doctor_list.dart';
+import 'package:plant/ui/screens/notification_screen.dart';
+import 'package:plant/ui/screens/signin_page.dart';
 import 'package:plant/ui/screens/widgets/plant_widget.dart';
 import 'package:plant/ui/screens/widgets/profile_widget.dart';
 
@@ -68,26 +70,27 @@ class ProfilePage extends StatelessWidget {
             SizedBox(
               // height: size.height * .7,
               width: size.width,
-              child:  Column(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const ProfileWidget(
-                    icon: Icons.person,
-                    title: 'My Profile',
-                  ),
+                  // const ProfileWidget(
+                  //   icon: Icons.person,
+                  //   title: 'My Profile',
+                  // ),
                   ProfileWidget(
                     icon: Icons.medical_information_outlined,
                     title: 'Find Doctor',
                     route: DoctorListScreen(),
                   ),
-                  const ProfileWidget(
+                  ProfileWidget(
                     icon: Icons.notifications,
                     title: 'Notifications',
+                    route: NotificationPage(),
                   ),
-                  const ProfileWidget(
-                    icon: Icons.settings,
-                    title: 'Settings',
-                  ),
+                  // const ProfileWidget(
+                  //   icon: Icons.settings,
+                  //   title: 'Settings',
+                  // ),
                   // const ProfileWidget(
                   //   icon: Icons.chat,
                   //   title: 'FAQs',
@@ -96,10 +99,48 @@ class ProfilePage extends StatelessWidget {
                   //   icon: Icons.share,
                   //   title: 'Share',
                   // ),
-                  const ProfileWidget(
-                    icon: Icons.logout,
-                    title: 'Log Out',
-                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 18),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.logout,
+                              color: Constants.blackColor.withOpacity(.5),
+                              size: 24,
+                            ),
+                            const SizedBox(
+                              width: 16,
+                            ),
+                            Text(
+                              "Log Out",
+                              style: TextStyle(
+                                color: Constants.blackColor,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            FirebaseAuth.instance.signOut();
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SignIn()));
+                          },
+                          icon: Icon(
+                            Icons.arrow_forward_ios,
+                            color: Constants.blackColor.withOpacity(.4),
+                          ),
+                          color: Constants.blackColor.withOpacity(.4),
+                        )
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),
