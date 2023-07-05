@@ -1,30 +1,29 @@
 import 'dart:developer';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:plant/constants.dart';
 import 'package:plant/services/googleauth.dart';
 import 'package:plant/ui/root_page.dart';
 import 'package:plant/ui/screens/signin_page.dart';
-import 'package:plant/ui/screens/signin_page.dart';
 import 'package:plant/ui/screens/widgets/custom_textfield.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:page_transition/page_transition.dart';
 
 class SignUp extends StatelessWidget {
   SignUp({Key? key}) : super(key: key);
   final _formKey = GlobalKey<FormState>();
+  // String? selectedRole;
 
-  final List<Map<String, dynamic>> _items = [
-    {
-      'value': 'User',
-      'label': 'User',
-    },
-    {
-      'value': 'Doctor',
-      'label': 'Doctor',
-    },
-  ];
+  // final List<Map<String, dynamic>> _items = [
+  //   {
+  //     'value': 'User',
+  //     'label': 'User',
+  //   },
+  //   {
+  //     'value': 'doctor',
+  //     'label': 'Doctor',
+  //   },
+  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +31,8 @@ class SignUp extends StatelessWidget {
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
     final TextEditingController nameController = TextEditingController();
+
+    
 
     return Scaffold(
       body: Padding(
@@ -72,30 +73,37 @@ class SignUp extends StatelessWidget {
                   icon: Icons.lock,
                   controller: passwordController,
                 ),
-                DropdownButtonFormField(
-                  items: _items
-                      .map((item) => DropdownMenuItem(
-                            child: Text(item['label']),
-                            value: item['value'],
-                          ))
-                      .toList(),
-                  onChanged: (value) {},
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none,
-                    ),
-                    hintText: 'Select Role',
-                    prefixIcon: Icon(Icons.person, color: Colors.grey[600]),
-                  ),
-                ),
+                // DropdownButtonFormField(
+                //   items: _items
+                //       .map((item) => DropdownMenuItem(
+                //             child: Text(item['label']),
+                //             value: item['value'],
+                //           ))
+                //       .toList(),
+                //   onChanged: (value) {
+                //     selectedRole = value.toString();
+                //   },
+                //   decoration: InputDecoration(
+                //     border: OutlineInputBorder(
+                //       borderRadius: BorderRadius.circular(10),
+                //       borderSide: BorderSide.none,
+                //     ),
+                //     hintText: 'Select Role',
+                //     prefixIcon: Icon(Icons.person, color: Colors.grey[600]),
+                //   ),
+                // ),
                 const SizedBox(
                   height: 20,
                 ),
                 GestureDetector(
                   onTap: () {
-                    registerUser(context, emailController.text,
-                        passwordController.text, nameController.text);
+                   
+                    registerUser(
+                      context,
+                      emailController.text,
+                      passwordController.text,
+                      nameController.text,
+                    );
                   },
                   child: Container(
                     width: size.width,
@@ -184,7 +192,7 @@ class SignUp extends StatelessWidget {
                     Navigator.pushReplacement(
                         context,
                         PageTransition(
-                            child: const SignIn(),
+                            child: SignIn(),
                             type: PageTransitionType.bottomToTop));
                   },
                   child: Center(
@@ -215,24 +223,54 @@ class SignUp extends StatelessWidget {
   }
 
   //register user
-  void registerUser(
-      BuildContext context, String email, String password, String name) async {
-    // validity check
+  void registerUser(BuildContext context, String email, String password,String name) async {
+    // Validity check
     if (_formKey.currentState!.validate()) {
-      //register user
       try {
-        UserCredential userCredential = await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(email: email, password: password);
-        //save user to firestore
+        // log(selectedRole.toString() + ' ' + name.toString());
+        UserCredential userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+        
+        // Save user to Firestore
         await userCredential.user!.updateDisplayName(name);
         await userCredential.user!.reload();
         await userCredential.user!.sendEmailVerification();
-        //navigate to home
-        // ignore: use_build_context_synchronously
+         CollectionReference userCollection = FirebaseFirestore.instance.collection('users');
+            await userCollection.doc(userCredential.user!.uid).set({
+              'name': name,
+              'email': email,
+              // Add other user details as needed
+            });
+
+        // // Add user details to the respective collection based on the role
+        // if (  selectedRole.toString() == 'doctor') {
+        //   CollectionReference doctorCollection =
+        //       FirebaseFirestore.instance.collection('doctors');
+        //   await doctorCollection.doc(userCredential.user!.uid).set({
+        //     'name': name,
+        //     'email': email,
+        //     // Add other doctor details as needed
+        //   });
+        //   // } else {
+        //   //   CollectionReference userCollection = FirebaseFirestore.instance.collection('Users');
+        //   //   await userCollection.doc(userCredential.user!.uid).set({
+        //   //     'name': name,
+        //   //     'email': email,
+        //   //     // Add other user details as needed
+        //   //   });
+        // }
+
+        // Navigate to the desired screen
         Navigator.pushReplacement(
-            context,
-            PageTransition(
-                child: const SignIn(), type: PageTransitionType.bottomToTop));
+          context,
+          PageTransition(
+            child: SignIn(),
+            type: PageTransitionType.bottomToTop,
+          ),
+        );
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -250,11 +288,10 @@ class SignUp extends StatelessWidget {
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('An error occured'),
+            content: Text('An error occurred.'),
           ),
         );
       }
     }
   }
-
 }

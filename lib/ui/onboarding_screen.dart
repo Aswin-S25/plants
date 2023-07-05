@@ -27,7 +27,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             child: InkWell(
               onTap: () {
                 Navigator.pushReplacement(
-                    context, MaterialPageRoute(builder: (_) => const SignIn()));
+                    context, MaterialPageRoute(builder: (_) =>  SignIn()));
               }, //to login screen. We will update later
               child: const Text(
                 'Skip',
@@ -92,7 +92,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         }
                       } else {
                         Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (_) => const SignIn()));
+                            MaterialPageRoute(builder: (_) =>  SignIn()));
                       }
                     });
                   },

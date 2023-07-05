@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:plant/constants.dart';
 import 'package:plant/ui/root_page.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -107,7 +108,30 @@ class _NotificationPageState extends State<NotificationPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Plant Watering App'),
+        automaticallyImplyLeading: false,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        elevation: 0.0,
+        title: Row(
+          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(
+                Icons.arrow_back_ios,
+                color: Colors.blueGrey,
+              ),
+            ),
+            Text(
+              'Schedule Notification',
+              style: TextStyle(
+                color: Colors.blueGrey[700],
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -117,7 +141,7 @@ class _NotificationPageState extends State<NotificationPage> {
               title: const Text('Morning Time'),
               subtitle: Text("${morningTime.hour}:${morningTime.minute}"),
               trailing: IconButton(
-                icon: const Icon(Icons.edit),
+                icon: const Icon(Icons.edit, color: Colors.blueGrey),
                 onPressed: () async {
                   final selectedTime = await showTimePicker(
                     context: context,
@@ -141,7 +165,7 @@ class _NotificationPageState extends State<NotificationPage> {
               title: const Text('Evening Time'),
               subtitle: Text("${eveningTime.hour}:${eveningTime.minute}"),
               trailing: IconButton(
-                icon: const Icon(Icons.edit),
+                icon: const Icon(Icons.edit, color: Colors.blueGrey),
                 onPressed: () async {
                   final selectedTime = await showTimePicker(
                     context: context,
@@ -163,6 +187,10 @@ class _NotificationPageState extends State<NotificationPage> {
             ),
             const SizedBox(height: 16),
             ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(Constants.primaryColor),
+              ),
               onPressed: () {
                 NotificationsServices().sendNofication("title", "body");
               },
@@ -240,7 +268,6 @@ class NotificationsServices {
       6, // Set the desired hour (06:00 AM)
       23, // Set the desired minute (06:15 AM)
     );
-
 
     await _flutterLocalNotificationsPlugin.zonedSchedule(
       0,

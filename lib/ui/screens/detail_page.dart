@@ -101,7 +101,10 @@ class _DetailPageState extends State<DetailPage> {
                     child: SizedBox(
                       width: 170,
                       height: 350,
-                      child: Image.network(_plantList[widget.plantId].imageURL, fit: BoxFit.cover,),
+                      child: Image.network(
+                        _plantList[widget.plantId].imageURL,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                   Positioned(
@@ -228,7 +231,9 @@ class _DetailPageState extends State<DetailPage> {
               height: 50,
               width: 50,
               decoration: BoxDecoration(
-                  color: _plantList[widget.plantId].isSelected == true ? Constants.primaryColor.withOpacity(.5) : Colors.white,
+                  color: _plantList[widget.plantId].isSelected == true
+                      ? Constants.primaryColor.withOpacity(.5)
+                      : Colors.white,
                   borderRadius: BorderRadius.circular(50),
                   boxShadow: [
                     BoxShadow(
@@ -237,16 +242,21 @@ class _DetailPageState extends State<DetailPage> {
                       color: Constants.primaryColor.withOpacity(.3),
                     ),
                   ]),
-              child: IconButton(onPressed: (){
-                setState(() {
-                  bool isSelected = toggleIsSelected(_plantList[widget.plantId].isSelected);
+              child: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      bool isSelected = toggleIsSelected(
+                          _plantList[widget.plantId].isSelected);
 
-                  _plantList[widget.plantId].isSelected = isSelected;
-                });
-              }, icon: Icon(
-                Icons.shopping_cart,
-                color: _plantList[widget.plantId].isSelected == true ? Colors.white : Constants.primaryColor,
-              )),
+                      _plantList[widget.plantId].isSelected = isSelected;
+                    });
+                  },
+                  icon: Icon(
+                    Icons.notification_add,
+                    color: _plantList[widget.plantId].isSelected == true
+                        ? Colors.white
+                        : Constants.primaryColor,
+                  )),
             ),
             const SizedBox(
               width: 20,
@@ -257,10 +267,9 @@ class _DetailPageState extends State<DetailPage> {
                   Navigator.push(
                     context,
                     PageTransition(
-                      type: PageTransitionType.bottomToTop,
-                      duration: const Duration(milliseconds: 500),
-                      child: NotificationPage()
-                    ),
+                        type: PageTransitionType.bottomToTop,
+                        duration: const Duration(milliseconds: 500),
+                        child: NotificationPage()),
                   );
                 },
                 child: Container(

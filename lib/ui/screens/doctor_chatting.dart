@@ -7,15 +7,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:plant/constants.dart';
 import 'package:plant/models/doctors.dart';
+import 'package:plant/models/users.dart';
 import 'package:plant/ui/screens/widgets/single_msg.dart';
 
-class ChatScreen extends StatelessWidget {
-  final Doctor? doctor;
+class DoctorChat extends StatelessWidget {
+  final Users? doctor;
   final Map<String, dynamic>? userMap;
   final String? chatRoomId;
   final String? profileImage;
 
-  ChatScreen({
+  DoctorChat({
     Key? key,
     this.doctor,
     this.userMap,
@@ -25,11 +26,12 @@ class ChatScreen extends StatelessWidget {
 
   TextEditingController _messageController = TextEditingController();
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  String uid = FirebaseAuth.instance.currentUser!.uid;
 
   @override
   Widget build(BuildContext context) {
     log(chatRoomId!);
+
+    String uid = FirebaseAuth.instance.currentUser!.uid;
 
     return Scaffold(
         appBar: AppBar(
@@ -103,7 +105,7 @@ class ChatScreen extends StatelessWidget {
                           physics: BouncingScrollPhysics(),
                           itemBuilder: (context, index) {
                             bool isMe =
-                                snapshot.data!.docs[index]['sender'] == uid;
+                                snapshot.data!.docs[index]['sender'] == 1;
                             // Map<String, dynamic> map =
                             //     snapshot.data!.docs[index].data()
                             //         as Map<String, dynamic>;
@@ -213,7 +215,7 @@ class ChatScreen extends StatelessWidget {
                                     .collection('chats')
                                     .add({
                                   'message': message,
-                                  'sender': uid,
+                                  'sender': 1,
                                   'recevier': doctor!.id,
                                   'time': DateTime.now(),
                                   'last_msg': message,

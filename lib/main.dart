@@ -7,6 +7,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:plant/ui/onboarding_screen.dart';
 import 'package:plant/ui/root_page.dart';
 import 'package:plant/ui/screens/chat_screen.dart';
+import 'package:plant/ui/screens/doctor_home.dart';
 import 'package:plant/ui/screens/doctor_list.dart';
 import 'package:plant/ui/screens/home_page.dart';
 import 'package:plant/ui/screens/signin_page.dart';
@@ -18,7 +19,7 @@ FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  
+
   runApp(const MyApp());
 }
 
@@ -40,7 +41,13 @@ class MyApp extends StatelessWidget {
               log(snapshot.data.toString());
               // User is signed in
               log('User is signed in!');
-              return SignUp();
+              log(snapshot.data!.email.toString());
+              if (snapshot.data!.email == 'paul@gmail.com' ||
+                  snapshot.data!.email == "john@gmail.com" ||
+                  snapshot.data!.email == "appukuttan@gmail.com") {
+                return DoctorHome();
+              }
+              return RootPage();
             } else {
               // User is signed out
               log('User is currently signed out!');
