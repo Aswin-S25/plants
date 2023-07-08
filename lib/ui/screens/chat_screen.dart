@@ -102,6 +102,7 @@ class ChatScreen extends StatelessWidget {
                           reverse: true,
                           physics: BouncingScrollPhysics(),
                           itemBuilder: (context, index) {
+                            log(snapshot.data!.docs[index]['sender']);
                             bool isMe =
                                 snapshot.data!.docs[index]['sender'] == uid;
                             // Map<String, dynamic> map =

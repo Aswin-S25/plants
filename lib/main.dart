@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
                   snapshot.data!.email == "appukuttan@gmail.com") {
                 return DoctorHome();
               }
-              return RootPage();
+              return const RootPage();
             } else {
               // User is signed out
               log('User is currently signed out!');
