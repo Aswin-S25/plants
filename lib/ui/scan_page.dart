@@ -91,6 +91,7 @@ class _AddPlantState extends State<AddPlant> {
                       obscureText: false,
                       hintText: "Plant Price",
                       controller: _plantPriceController,
+                      isPrice: true,
                     ),
 
                     const SizedBox(height: 50),

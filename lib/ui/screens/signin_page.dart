@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:plant/constants.dart';
+import 'package:plant/services/googleauth.dart';
 import 'package:plant/ui/root_page.dart';
 import 'package:plant/ui/screens/doctor_home.dart';
 import 'package:plant/ui/screens/forgot_password.dart';
@@ -127,28 +128,48 @@ class SignIn extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                Container(
-                  width: size.width,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Constants.primaryColor),
-                      borderRadius: BorderRadius.circular(10)),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      SizedBox(
-                        height: 30,
-                        child: Image.asset('assets/images/google.png'),
-                      ),
-                      Text(
-                        'Sign In with Google',
-                        style: TextStyle(
-                          color: Constants.blackColor,
-                          fontSize: 18.0,
+                GestureDetector(
+                  onTap: () {
+                    log('Google Sign In');
+                    GoogleSignInProvider().signInWithGoogle().then((user) {
+                      if (user != null) {
+                        Navigator.pushReplacement(
+                            context,
+                            PageTransition(
+                                child: const RootPage(),
+                                type: PageTransitionType.bottomToTop));
+                      } else {
+                        Navigator.pushReplacement(
+                            context,
+                            PageTransition(
+                                child: SignIn(),
+                                type: PageTransitionType.bottomToTop));
+                      }
+                    });
+                  },
+                  child: Container(
+                    width: size.width,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Constants.primaryColor),
+                        borderRadius: BorderRadius.circular(10)),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        SizedBox(
+                          height: 30,
+                          child: Image.asset('assets/images/google.png'),
                         ),
-                      ),
-                    ],
+                        Text(
+                          'Sign In with Google',
+                          style: TextStyle(
+                            color: Constants.blackColor,
+                            fontSize: 18.0,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(

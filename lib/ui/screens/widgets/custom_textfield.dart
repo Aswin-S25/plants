@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:plant/constants.dart';
 
@@ -7,9 +6,15 @@ class CustomTextfield extends StatelessWidget {
   final bool obscureText;
   final String hintText;
   final TextEditingController controller;
+  final isPrice;
 
   const CustomTextfield({
-    Key? key, required this.icon, required this.obscureText, required this.hintText, required this.controller,
+    Key? key,
+    required this.icon,
+    required this.obscureText,
+    required this.hintText,
+    required this.controller,
+    this.isPrice = false,
   }) : super(key: key);
 
   @override
@@ -17,8 +22,13 @@ class CustomTextfield extends StatelessWidget {
     return TextFormField(
       controller: controller,
       validator: (value) {
-        if (value!.isEmpty) {
-          return "Please enter some text";
+        if(!isPrice) {
+          if (value!.isEmpty) {
+            return "Please enter $hintText";
+          }
+        }
+        else {
+          return null;
         }
         return null;
       },
@@ -28,8 +38,11 @@ class CustomTextfield extends StatelessWidget {
       ),
       decoration: InputDecoration(
         border: InputBorder.none,
-        prefixIcon: Icon(icon, color: Constants.blackColor.withOpacity(.3),),
-        hintText: hintText,
+        prefixIcon: Icon(
+          icon,
+          color: Constants.blackColor.withOpacity(.3),
+        ),
+        hintText: isPrice ? hintText : '$hintText *',
         hintStyle: TextStyle(
           color: Constants.blackColor.withOpacity(.3),
         ),
