@@ -32,8 +32,6 @@ class SignUp extends StatelessWidget {
     final TextEditingController passwordController = TextEditingController();
     final TextEditingController nameController = TextEditingController();
 
-    
-
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
@@ -97,7 +95,6 @@ class SignUp extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                   
                     registerUser(
                       context,
                       emailController.text,
@@ -223,27 +220,30 @@ class SignUp extends StatelessWidget {
   }
 
   //register user
-  void registerUser(BuildContext context, String email, String password,String name) async {
+  void registerUser(
+      BuildContext context, String email, String password, String name) async {
     // Validity check
     if (_formKey.currentState!.validate()) {
       try {
-        // log(selectedRole.toString() + ' ' + name.toString());
+        log(name.toString());
         UserCredential userCredential =
             await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: email,
           password: password,
         );
-        
+
         // Save user to Firestore
         await userCredential.user!.updateDisplayName(name);
         await userCredential.user!.reload();
         await userCredential.user!.sendEmailVerification();
-         CollectionReference userCollection = FirebaseFirestore.instance.collection('users');
-            await userCollection.doc(userCredential.user!.uid).set({
-              'name': name,
-              'email': email,
-              // Add other user details as needed
-            });
+        CollectionReference userCollection =
+            FirebaseFirestore.instance.collection('users');
+        await userCollection.doc(userCredential.user!.uid).set({
+          'name': name,
+          'email': email,
+          // Add other user details as needed
+        });
+        log('User Added');
 
         // // Add user details to the respective collection based on the role
         // if (  selectedRole.toString() == 'doctor') {

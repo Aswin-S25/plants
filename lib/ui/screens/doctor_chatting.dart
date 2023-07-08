@@ -80,9 +80,9 @@ class DoctorChat extends StatelessWidget {
                   child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                     stream: _firestore
                         .collection('doctors')
-                        .doc(uid)
-                        .collection('messages')
                         .doc(doctor!.id)
+                        .collection('messages')
+                        .doc(uid)
                         .collection('chats')
                         .orderBy('time', descending: true)
                         .snapshots(),
